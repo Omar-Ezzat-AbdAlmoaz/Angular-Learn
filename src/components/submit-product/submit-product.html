@@ -1,0 +1,92 @@
+<section class="form-page">
+  <h1>{{ isEdit() ? 'Edit Product' : 'Add New Product' }}</h1>
+
+  <form class="product-form" #productForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="field">
+      <label for="title">Title *</label>
+      <input
+        id="title"
+        name="title"
+        type="text"
+        [(ngModel)]="formData.title"
+        required
+        #titleField="ngModel"
+        [class.invalid]="titleField.invalid && titleField.touched"
+      />
+      @if (titleField.invalid && titleField.touched) {
+        <span class="error">Title is required.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="price">Price *</label>
+      <input
+        id="price"
+        name="price"
+        type="number"
+        [(ngModel)]="formData.price"
+        required
+        min="0"
+        #priceField="ngModel"
+        [class.invalid]="priceField.invalid && priceField.touched"
+      />
+      @if (priceField.invalid && priceField.touched) {
+        <span class="error">Price is required.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="stock">Stock *</label>
+      <input
+        id="stock"
+        name="stock"
+        type="number"
+        [(ngModel)]="formData.stock"
+        required
+        min="0"
+        #stockField="ngModel"
+        [class.invalid]="stockField.invalid && stockField.touched"
+      />
+      @if (stockField.invalid && stockField.touched) {
+        <span class="error">Stock is required.</span>
+      }
+    </div>
+
+    <div class="field">
+      <label for="category">Category</label>
+      <input
+        id="category"
+        name="category"
+        type="text"
+        [(ngModel)]="formData.category"
+      />
+    </div>
+
+    <div class="field">
+      <label for="thumbnail">Thumbnail URL</label>
+      <input
+        id="thumbnail"
+        name="thumbnail"
+        type="url"
+        [(ngModel)]="formData.thumbnail"
+      />
+    </div>
+
+    <div class="field full">
+      <label for="description">Description</label>
+      <textarea
+        id="description"
+        name="description"
+        [(ngModel)]="formData.description"
+        rows="4"
+      ></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn primary" [disabled]="productForm.invalid && productForm.touched">
+        {{ isEdit() ? 'Update Product' : 'Add Product' }}
+      </button>
+      <a routerLink="/master-products" class="btn secondary">Cancel</a>
+    </div>
+  </form>
+</section>

@@ -1,0 +1,21 @@
+<header class="header">
+  <nav class="nav" aria-label="Main navigation">
+    <a class="nav-brand" routerLink="/">E-commerce</a>
+
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      </li>
+      <li>
+        <a routerLink="/products" routerLinkActive="active">Products</a>
+      </li>
+      <li>
+        <a routerLink="/master-products" routerLinkActive="active">Master Products</a>
+      </li>
+    </ul>
+  </nav>
+
+  <button type="button" class="theme-btn" appThemeToggle>
+    <span aria-hidden="true">🌓</span>
+  </button>
+</header>

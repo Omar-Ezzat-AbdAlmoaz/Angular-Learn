@@ -1,0 +1,14 @@
+<div class="gallery-container">
+
+  <div class="image-box">
+    <img [src]="images[currentIndex].url" alt="Gallery Image" />
+  </div>
+
+  <div class="buttons">
+    <button (click)="display()">Display</button>
+    <button (click)="next()">Next</button>
+    <button (click)="prev()">Prev</button>
+    <button (click)="stop()">Stop</button>
+  </div>
+
+</div>

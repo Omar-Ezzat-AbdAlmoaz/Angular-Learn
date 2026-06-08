@@ -1,0 +1,113 @@
+:host {
+  display: block;
+  padding: 1.5rem clamp(1rem, 3vw, 2.5rem) 6rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.sort-group {
+  display: inline-flex;
+  gap: 0.5rem;
+}
+
+.sort-group button {
+  padding: 0.5rem 0.9rem;
+  background: var(--surface-2);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.sort-group button:hover,
+.sort-group button:focus-visible {
+  border-color: var(--primary);
+}
+
+.sort-group button[aria-pressed='true'] {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+}
+
+.sort-group button:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.selected-count {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.total-bar {
+  position: sticky;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+  font-size: 1rem;
+}
+
+.total-bar strong {
+  font-size: 1.4rem;
+  color: var(--primary);
+}
+
+:host-context(.dark-theme) .toolbar {
+  background: var(--surface);
+}
+
+:host-context(.dark-theme) .total-bar {
+  background: var(--surface);
+}

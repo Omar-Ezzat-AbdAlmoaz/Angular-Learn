@@ -1,0 +1,44 @@
+<section class="page">
+  <header class="page-header">
+    <h1>Our Products</h1>
+  </header>
+
+  <div class="toolbar" role="region" aria-label="Products toolbar">
+    <div class="sort-group" role="group" aria-label="Sort products">
+      <button
+        type="button"
+        (click)="toggleSort('price')"
+        [attr.aria-pressed]="sortState()?.key === 'price'"
+      >
+        {{ sortLabel('price') }}
+      </button>
+      <button
+        type="button"
+        (click)="toggleSort('stock')"
+        [attr.aria-pressed]="sortState()?.key === 'stock'"
+      >
+        {{ sortLabel('stock') }}
+      </button>
+    </div>
+    <p class="selected-count" aria-live="polite">
+      {{ selectedCount() }} selected
+    </p>
+  </div>
+
+  <div class="grid">
+    @for (product of sortedProducts(); track product.id) {
+      <app-product-card
+        [product]="product"
+        [selected]="selectedIds().has(product.id)"
+        [bought]="purchasedIds().has(product.id)"
+        (toggleSelection)="toggleSelection(product.id)"
+        (buy)="onBuy(product)"
+      />
+    }
+  </div>
+
+  <footer class="total-bar" aria-live="polite">
+    <span>Total price</span>
+    <strong>${{ totalPrice().toFixed(2) }}</strong>
+  </footer>
+</section>
