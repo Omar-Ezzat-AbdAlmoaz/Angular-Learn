@@ -1,39 +1,39 @@
 <section class="details-page">
-  @if (product(); as p) {
+  @if (product) {
     <div class="details-card">
       <div class="image-section">
-        <img [src]="p.thumbnail" [alt]="p.title" />
+        <img [src]="product.thumbnail" [alt]="product.title" />
       </div>
 
       <div class="info-section">
-        <span class="category">{{ p.category }}</span>
-        <h1 class="title">{{ p.title }}</h1>
-        <p class="price">${{ p.price.toFixed(2) }}</p>
+        <span class="category">{{ product.category }}</span>
+        <h1 class="title">{{ product.title }}</h1>
+        <p class="price">${{ product.price.toFixed(2) }}</p>
 
         <p
           class="stock"
-          [class.out]="p.stock === 0"
+          [class.out]="product.stock === 0"
         >
-          {{ p.stock === 0 ? 'Out of stock' : 'In stock: ' + p.stock }}
+          {{ product.stock === 0 ? 'Out of stock' : 'In stock: ' + product.stock }}
         </p>
 
         <div class="description">
           <h2>Description</h2>
-          <p>{{ p.description }}</p>
+          <p>{{ product.description }}</p>
         </div>
 
         <div class="meta">
-          <p><strong>Product ID:</strong> {{ p.id }}</p>
-          <p><strong>Category:</strong> {{ p.category }}</p>
+          <p><strong>Product ID:</strong> {{ product.id }}</p>
+          <p><strong>Category:</strong> {{ product.category }}</p>
         </div>
 
         <div class="actions">
-          <a [routerLink]="['/submit-product', p.id]" class="btn primary">Edit Product</a>
+          <a [routerLink]="['/submit-product', product.id]" class="btn primary">Edit Product</a>
           <a routerLink="/master-products" class="btn secondary">Back to Products</a>
         </div>
       </div>
     </div>
-  } @else if (notFound()) {
+  } @else if (notFound) {
     <div class="not-found">
       <h1>Product Not Found</h1>
       <p>The product you are looking for does not exist.</p>

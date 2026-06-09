@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ProductService } from '../../services/product';
 
@@ -7,12 +7,15 @@ import { ProductService } from '../../services/product';
   imports: [RouterLink],
   templateUrl: './master-products.html',
   styleUrl: './master-products.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MasterProducts {
-  protected productService = inject(ProductService);
+  productService: ProductService;
 
-  protected deleteProduct(id: number): void {
+  constructor(productService: ProductService) {
+    this.productService = productService;
+  }
+
+  deleteProduct(id: number): void {
     this.productService.delete(id);
   }
 }

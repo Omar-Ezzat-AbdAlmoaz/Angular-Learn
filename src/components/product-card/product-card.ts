@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Product } from '../../models/product';
 import { TruncateWordsPipe } from '../../pipes/truncate-words';
 import { ImageZoomDirective } from '../../directives/image-zoom';
@@ -8,36 +8,35 @@ import { ImageZoomDirective } from '../../directives/image-zoom';
   imports: [TruncateWordsPipe, ImageZoomDirective],
   templateUrl: './product-card.html',
   styleUrl: './product-card.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProductCard {
-  product = input.required<Product>();
-  selected = input<boolean>(false);
-  bought = input<boolean>(false);
+  @Input() product!: Product;
+  @Input() selected = false;
+  @Input() bought = false;
 
-  toggleSelection = output<number>();
-  buy = output<Product>();
+  @Output() toggleSelection = new EventEmitter<number>();
+  @Output() buy = new EventEmitter<Product>();
 
-  protected showFull = signal(false);
+  showFull = false;
 
-  protected isOutOfStock(): boolean {
-    return this.product().stock === 0;
+  isOutOfStock(): boolean {
+    return this.product.stock === 0;
   }
 
-  protected onCheckboxChange(event: Event): void {
+  onCheckboxChange(event: Event): void {
     const checked = (event.target as HTMLInputElement).checked;
-    this.toggleSelection.emit(this.product().id);
+    this.toggleSelection.emit(this.product.id);
     void checked;
   }
 
-  protected onBuy(): void {
-    if (this.isOutOfStock() || this.bought()) {
+  onBuy(): void {
+    if (this.isOutOfStock() || this.bought) {
       return;
     }
-    this.buy.emit(this.product());
+    this.buy.emit(this.product);
   }
 
-  protected toggleDescription(): void {
-    this.showFull.update((v) => !v);
+  toggleDescription(): void {
+    this.showFull = !this.showFull;
   }
 }

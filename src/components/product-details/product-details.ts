@@ -1,4 +1,4 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product';
@@ -10,19 +10,24 @@ import { ProductService } from '../../services/product';
   styleUrl: './product-details.css',
 })
 export class ProductDetails implements OnInit {
-  private route = inject(ActivatedRoute);
-  private productService = inject(ProductService);
+  product: Product | undefined = undefined;
+  notFound = false;
 
-  protected product = signal<Product | undefined>(undefined);
-  protected notFound = signal(false);
+  private route: ActivatedRoute;
+  private productService: ProductService;
+
+  constructor(route: ActivatedRoute, productService: ProductService) {
+    this.route = route;
+    this.productService = productService;
+  }
 
   ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     const found = this.productService.getById(id);
     if (found) {
-      this.product.set(found);
+      this.product = found;
     } else {
-      this.notFound.set(true);
+      this.notFound = true;
     }
   }
 }

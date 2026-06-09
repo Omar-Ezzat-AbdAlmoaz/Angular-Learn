@@ -1,24 +1,24 @@
 <article
   class="card"
-  [class.selected]="selected()"
-  [class.bought]="bought()"
+  [class.selected]="selected"
+  [class.bought]="bought"
   [class.out-of-stock]="isOutOfStock()"
 >
   <div class="image-wrapper">
     <img
-      [src]="product().thumbnail"
-      [alt]="product().title"
+      [src]="product.thumbnail"
+      [alt]="product.title"
       appImageZoom
       loading="lazy"
     />
-    @if (bought()) {
+    @if (bought) {
       <span class="bought-badge" aria-label="Already purchased">Purchased</span>
     }
   </div>
 
   <div class="content">
-    <h2 class="title">{{ product().title }}</h2>
-    <p class="price">${{ product().price.toFixed(2) }}</p>
+    <h2 class="title">{{ product.title }}</h2>
+    <p class="price">${{ product.price.toFixed(2) }}</p>
 
     <p
       class="stock"
@@ -26,26 +26,26 @@
       [attr.aria-label]="
         isOutOfStock()
           ? 'Out of stock'
-          : 'In stock, ' + product().stock + ' available'
+          : 'In stock, ' + product.stock + ' available'
       "
     >
-      {{ isOutOfStock() ? 'Out of stock' : 'In stock: ' + product().stock }}
+      {{ isOutOfStock() ? 'Out of stock' : 'In stock: ' + product.stock }}
     </p>
 
     <p class="description">
       {{
-        showFull()
-          ? product().description
-          : (product().description | truncateWords: 3)
+        showFull
+          ? product.description
+          : (product.description | truncateWords: 3)
       }}
     </p>
     <button
       type="button"
       class="see-more"
       (click)="toggleDescription()"
-      [attr.aria-expanded]="showFull()"
+      [attr.aria-expanded]="showFull"
     >
-      {{ showFull() ? 'See less' : 'See all description' }}
+      {{ showFull ? 'See less' : 'See all description' }}
     </button>
   </div>
 
@@ -53,9 +53,9 @@
     <label class="select">
       <input
         type="checkbox"
-        [checked]="selected()"
+        [checked]="selected"
         (change)="onCheckboxChange($event)"
-        [attr.aria-label]="'Select ' + product().title"
+        [attr.aria-label]="'Select ' + product.title"
       />
       <span>Select</span>
     </label>
@@ -64,9 +64,9 @@
       type="button"
       class="buy-btn"
       (click)="onBuy()"
-      [disabled]="isOutOfStock() || bought()"
+      [disabled]="isOutOfStock() || bought"
     >
-      {{ bought() ? 'Bought' : 'Buy' }}
+      {{ bought ? 'Bought' : 'Buy' }}
     </button>
   </div>
 </article>

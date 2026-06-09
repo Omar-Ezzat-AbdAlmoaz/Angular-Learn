@@ -1,10 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  inject,
-  signal,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Product } from '../../models/product';
 import { ProductService } from '../../services/product';
 import { ProductCard } from '../product-card/product-card';
@@ -18,72 +12,76 @@ type SortState = { key: SortKey; dir: SortDir } | null;
   imports: [ProductCard],
   templateUrl: './products.html',
   styleUrl: './products.css',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Products {
-  private productService = inject(ProductService);
+export class Products implements OnInit {
+  private productService: ProductService;
 
-  protected products = computed(() => this.productService.getAll());
-  protected sortState = signal<SortState>(null);
-  protected selectedIds = signal<Set<number>>(new Set());
-  protected purchasedIds = signal<Set<number>>(new Set());
-  protected totalPrice = signal(0);
+  products: Product[] = [];
+  sortedProducts: Product[] = [];
+  sortState: SortState = null;
+  selectedIds: Set<number> = new Set();
+  purchasedIds: Set<number> = new Set();
+  selectedCount = 0;
+  totalPrice = 0;
 
-  protected sortedProducts = computed(() => {
-    const state = this.sortState();
-    const list = [...this.products()];
-    if (!state) {
-      return list;
-    }
-    return list.sort((a, b) => {
-      const diff = a[state.key] - b[state.key];
-      return state.dir === 'asc' ? diff : -diff;
-    });
-  });
+  constructor(productService: ProductService) {
+    this.productService = productService;
+  }
 
-  protected selectedCount = computed(() => this.selectedIds().size);
+  ngOnInit(): void {
+    this.products = this.productService.getAll();
+    this.sortedProducts = [...this.products];
+  }
 
-  protected sortLabel(key: SortKey): string {
-    const state = this.sortState();
-    if (!state || state.key !== key) {
+  sortLabel(key: SortKey): string {
+    if (!this.sortState || this.sortState.key !== key) {
       return `Sort by ${key}`;
     }
-    const arrow = state.dir === 'asc' ? '↑' : '↓';
+    const arrow = this.sortState.dir === 'asc' ? '\u2191' : '\u2193';
     return `${key.charAt(0).toUpperCase() + key.slice(1)} ${arrow}`;
   }
 
-  protected toggleSort(key: SortKey): void {
-    const current = this.sortState();
-    if (!current || current.key !== key) {
-      this.sortState.set({ key, dir: 'asc' });
-    } else if (current.dir === 'asc') {
-      this.sortState.set({ key, dir: 'desc' });
+  toggleSort(key: SortKey): void {
+    if (!this.sortState || this.sortState.key !== key) {
+      this.sortState = { key, dir: 'asc' };
+    } else if (this.sortState.dir === 'asc') {
+      this.sortState = { key, dir: 'desc' };
     } else {
-      this.sortState.set(null);
+      this.sortState = null;
     }
+    this.applySort();
   }
 
-  protected toggleSelection(id: number): void {
-    const updated = new Set(this.selectedIds());
-    if (updated.has(id)) {
-      updated.delete(id);
-    } else {
-      updated.add(id);
+  private applySort(): void {
+    if (!this.sortState) {
+      this.sortedProducts = [...this.products];
+      return;
     }
-    this.selectedIds.set(updated);
+    const { key, dir } = this.sortState;
+    this.sortedProducts = [...this.products].sort((a, b) => {
+      const diff = a[key] - b[key];
+      return dir === 'asc' ? diff : -diff;
+    });
   }
 
-  protected onBuy(product: Product): void {
+  toggleSelection(id: number): void {
+    if (this.selectedIds.has(id)) {
+      this.selectedIds.delete(id);
+    } else {
+      this.selectedIds.add(id);
+    }
+    this.selectedCount = this.selectedIds.size;
+  }
+
+  onBuy(product: Product): void {
     if (product.stock === 0) {
       return;
     }
-    const purchased = this.purchasedIds();
-    if (purchased.has(product.id)) {
+    if (this.purchasedIds.has(product.id)) {
       return;
     }
-    const updated = new Set(purchased);
-    updated.add(product.id);
-    this.purchasedIds.set(updated);
-    this.totalPrice.update((p) => p + product.price);
+    this.purchasedIds = new Set(this.purchasedIds);
+    this.purchasedIds.add(product.id);
+    this.totalPrice += product.price;
   }
 }

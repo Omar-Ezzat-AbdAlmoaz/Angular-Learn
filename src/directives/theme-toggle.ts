@@ -1,25 +1,26 @@
-import { Directive, effect, signal } from '@angular/core';
+import { Directive, HostBinding, HostListener } from '@angular/core';
 
 @Directive({
   selector: '[appThemeToggle]',
-  host: {
-    '(click)': 'toggle()',
-    '[attr.aria-pressed]': 'isDark()',
-    '[attr.aria-label]': "isDark() ? 'Switch to light mode' : 'Switch to dark mode'",
-  },
 })
 export class ThemeToggleDirective {
-  protected isDark = signal(false);
-
-  constructor() {
-    effect(() => {
-      if (typeof document !== 'undefined') {
-        document.body.classList.toggle('dark-theme', this.isDark());
-      }
-    });
+  @HostBinding('attr.aria-pressed')
+  get ariaPressed(): string {
+    return String(this.isDark);
   }
 
-  protected toggle(): void {
-    this.isDark.update((v) => !v);
+  @HostBinding('attr.aria-label')
+  get ariaLabel(): string {
+    return this.isDark ? 'Switch to light mode' : 'Switch to dark mode';
+  }
+
+  isDark = false;
+
+  @HostListener('click')
+  toggle(): void {
+    this.isDark = !this.isDark;
+    if (typeof document !== 'undefined') {
+      document.body.classList.toggle('dark-theme', this.isDark);
+    }
   }
 }

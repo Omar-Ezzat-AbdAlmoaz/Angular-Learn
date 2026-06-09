@@ -1,25 +1,29 @@
-import { Directive, signal } from '@angular/core';
+import { Directive, HostBinding, HostListener, ElementRef, Renderer2 } from '@angular/core';
 
 @Directive({
   selector: '[appImageZoom]',
-  host: {
-    '(mouseenter)': 'onEnter()',
-    '(mouseleave)': 'onLeave()',
-    '[class.zoomed]': 'zoomed()',
-    '[style.display]': '"block"',
-    '[style.cursor]': '"zoom-in"',
-    '[style.transition]': '"transform 0.35s ease"',
-    '[style.transform]': 'zoomed() ? "scale(1.1)" : null',
-  },
 })
 export class ImageZoomDirective {
-  protected zoomed = signal(false);
+  private zoomed = false;
 
-  protected onEnter(): void {
-    this.zoomed.set(true);
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+  ) {
+    this.renderer.setStyle(this.el.nativeElement, 'display', 'block');
+    this.renderer.setStyle(this.el.nativeElement, 'cursor', 'zoom-in');
+    this.renderer.setStyle(this.el.nativeElement, 'transition', 'transform 0.35s ease');
   }
 
-  protected onLeave(): void {
-    this.zoomed.set(false);
+  @HostListener('mouseenter')
+  onEnter(): void {
+    this.zoomed = true;
+    this.renderer.setStyle(this.el.nativeElement, 'transform', 'scale(1.1)');
+  }
+
+  @HostListener('mouseleave')
+  onLeave(): void {
+    this.zoomed = false;
+    this.renderer.setStyle(this.el.nativeElement, 'transform', 'scale(1)');
   }
 }
