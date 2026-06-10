@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "fullName": "Amr Abd-Alhafeez",
+      "email": "amre76495@gmail.com",
+      "password": "amre76495@gmail.com",
+      "id": 1
+    },
+    {
+      "fullName": "Amr Abd-Alhafeez",
+      "email": "amre76@gmail.com",
+      "password": "amre76495@gmail.com",
+      "id": 2
+    }
+  ]
+}

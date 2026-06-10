@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:DisplayPhoto": "node dist/DisplayPhoto/server/server.mjs"
+    "serve:ssr:DisplayPhoto": "node dist/DisplayPhoto/server/server.mjs",
+    "server": "json-server --watch db.json --port 3000"
   },
   "private": true,
   "packageManager": "npm@11.6.2",
@@ -33,6 +34,7 @@
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "typescript": "~5.9.2",
+    "json-server": "^0.17.4",
     "vitest": "^4.0.8"
   }
 }

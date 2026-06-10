@@ -15,7 +15,16 @@
     </ul>
   </nav>
 
-  <button type="button" class="theme-btn" appThemeToggle>
-    <span aria-hidden="true">🌓</span>
-  </button>
+  <div class="header-right">
+    @if (isLoggedIn) {
+      <button type="button" class="btn-logout" (click)="logout()">Logout</button>
+    } @else {
+      <a routerLink="/login" class="btn-login">Login</a>
+      <a routerLink="/signup" class="btn-signup">Sign Up</a>
+    }
+
+    <button type="button" class="theme-btn" appThemeToggle>
+      <span aria-hidden="true">🌓</span>
+    </button>
+  </div>
 </header>
