@@ -8,29 +8,29 @@
       <button
         type="button"
         (click)="toggleSort('price')"
-        [attr.aria-pressed]="sortState?.key === 'price'"
+        [attr.aria-pressed]="sortState()?.key === 'price'"
       >
         {{ sortLabel('price') }}
       </button>
       <button
         type="button"
         (click)="toggleSort('stock')"
-        [attr.aria-pressed]="sortState?.key === 'stock'"
+        [attr.aria-pressed]="sortState()?.key === 'stock'"
       >
         {{ sortLabel('stock') }}
       </button>
     </div>
     <p class="selected-count" aria-live="polite">
-      {{ selectedCount }} selected
+      {{ selectedCount() }} selected
     </p>
   </div>
 
   <div class="grid">
-    @for (product of sortedProducts; track product.id) {
+    @for (product of sortedProducts(); track product.id) {
       <app-product-card
         [product]="product"
-        [selected]="selectedIds.has(product.id)"
-        [bought]="purchasedIds.has(product.id)"
+        [selected]="selectedIds().has(product.id)"
+        [bought]="purchasedIds().has(product.id)"
         (toggleSelection)="toggleSelection($event)"
         (buy)="onBuy($event)"
       />
@@ -39,6 +39,6 @@
 
   <footer class="total-bar" aria-live="polite">
     <span>Total price</span>
-    <strong>${{ totalPrice.toFixed(2) }}</strong>
+    <strong>${{ totalPrice().toFixed(2) }}</strong>
   </footer>
 </section>

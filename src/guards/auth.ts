@@ -1,8 +1,9 @@
 import { inject, PLATFORM_ID } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
+import { CanActivateFn, CanActivateChildFn, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../services/auth';
 
+// canActivate guard: protects individual routes (e.g. standalone pages)
 export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
   const router = inject(Router);
@@ -17,5 +18,24 @@ export const authGuard: CanActivateFn = () => {
   }
 
   router.navigate(['/login']);
+  return false;
+};
+
+// canActivateChild guard: protects all child routes of MainLayout
+// Redirects to /signup if the user is not authenticated
+export const authChildGuard: CanActivateChildFn = () => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
+
+  if (!isPlatformBrowser(platformId)) {
+    return true;
+  }
+
+  if (authService.isLoggedIn()) {
+    return true;
+  }
+
+  router.navigate(['/signup']);
   return false;
 };

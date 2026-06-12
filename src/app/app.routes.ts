@@ -1,29 +1,68 @@
 import { Routes } from '@angular/router';
-import { MainLayout } from '../components/main-layout/main-layout';
-import { Home } from '../components/home/home';
-import { Products } from '../components/products/products';
-import { ProductDetails } from '../components/product-details/product-details';
-import { SubmitProduct } from '../components/submit-product/submit-product';
-import { MasterProducts } from '../components/master-products/master-products';
-import { Login } from '../components/login/login';
-import { Signup } from '../components/signup/signup';
-import { Error } from '../components/error/error';
-import { authGuard } from '../guards/auth';
+import { authChildGuard } from '../guards/auth';
 
+// Routes use loadComponent() for lazy loading — each feature is loaded on demand
+// The MainLayout uses canActivateChild to protect all child routes
 export const routes: Routes = [
   {
     path: '',
-    component: MainLayout,
+    loadComponent: () =>
+      import('../components/main-layout/main-layout').then((m) => m.MainLayout),
+    canActivateChild: [authChildGuard],
     children: [
-      { path: '', component: Home, canActivate: [authGuard] },
-      { path: 'products', component: Products, canActivate: [authGuard] },
-      { path: 'products/:id', component: ProductDetails, canActivate: [authGuard] },
-      { path: 'submit-product', component: SubmitProduct, canActivate: [authGuard] },
-      { path: 'submit-product/:id', component: SubmitProduct, canActivate: [authGuard] },
-      { path: 'master-products', component: MasterProducts, canActivate: [authGuard] },
+      {
+        path: '',
+        loadComponent: () =>
+          import('../components/home/home').then((m) => m.Home),
+      },
+      {
+        path: 'products',
+        loadComponent: () =>
+          import('../components/products/products').then((m) => m.Products),
+      },
+      {
+        path: 'products/:id',
+        loadComponent: () =>
+          import('../components/product-details/product-details').then(
+            (m) => m.ProductDetails,
+          ),
+      },
+      {
+        path: 'submit-product',
+        loadComponent: () =>
+          import('../components/submit-product/submit-product').then(
+            (m) => m.SubmitProduct,
+          ),
+      },
+      {
+        path: 'submit-product/:id',
+        loadComponent: () =>
+          import('../components/submit-product/submit-product').then(
+            (m) => m.SubmitProduct,
+          ),
+      },
+      {
+        path: 'master-products',
+        loadComponent: () =>
+          import('../components/master-products/master-products').then(
+            (m) => m.MasterProducts,
+          ),
+      },
     ],
   },
-  { path: 'login', component: Login },
-  { path: 'signup', component: Signup },
-  { path: '**', component: Error },
+  {
+    path: 'login',
+    loadComponent: () =>
+      import('../components/login/login').then((m) => m.Login),
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('../components/signup/signup').then((m) => m.Signup),
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('../components/error/error').then((m) => m.Error),
+  },
 ];

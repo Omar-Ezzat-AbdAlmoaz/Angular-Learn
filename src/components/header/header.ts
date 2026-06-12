@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, ChangeDetectionStrategy, signal, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { ThemeToggleDirective } from '../../directives/theme-toggle';
@@ -9,23 +9,21 @@ import { AuthService } from '../../services/auth';
   imports: [RouterLink, RouterLinkActive, ThemeToggleDirective],
   templateUrl: './header.html',
   styleUrl: './header.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  isLoggedIn = false;
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private platformId = inject(PLATFORM_ID);
 
-  constructor(
-    public authService: AuthService,
-    private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
-  ) {
-    if (isPlatformBrowser(this.platformId)) {
-      this.isLoggedIn = this.authService.isLoggedIn();
-    }
-  }
+  // Signal-based login state — updates immediately on login/logout
+  protected readonly isLoggedIn = signal(
+    isPlatformBrowser(this.platformId) && this.authService.isLoggedIn(),
+  );
 
   logout(): void {
     this.authService.logout();
-    this.isLoggedIn = false;
+    this.isLoggedIn.set(false);
     this.router.navigate(['/login']);
   }
 }

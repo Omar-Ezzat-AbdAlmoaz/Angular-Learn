@@ -1,4 +1,12 @@
 <app-header></app-header>
+
+<!-- Global loading indicator — visible while any HTTP request is in progress -->
+@if (loadingService.loading()) {
+  <div class="loading-bar" role="status" aria-label="Loading">
+    <div class="loading-spinner"></div>
+  </div>
+}
+
 <div class="container">
   <router-outlet></router-outlet>
 </div>

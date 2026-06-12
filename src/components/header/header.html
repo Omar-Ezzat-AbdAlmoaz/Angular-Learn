@@ -16,7 +16,7 @@
   </nav>
 
   <div class="header-right">
-    @if (isLoggedIn) {
+    @if (isLoggedIn()) {
       <button type="button" class="btn-logout" (click)="logout()">Logout</button>
     } @else {
       <a routerLink="/login" class="btn-login">Login</a>

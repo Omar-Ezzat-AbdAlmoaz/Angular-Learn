@@ -1,5 +1,5 @@
 <section class="form-page">
-  <h1>{{ isEdit ? 'Edit Product' : 'Add New Product' }}</h1>
+  <h1>{{ isEdit() ? 'Edit Product' : 'Add New Product' }}</h1>
 
   <form class="product-form" #productForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="field">
@@ -84,7 +84,7 @@
 
     <div class="actions">
       <button type="submit" class="btn primary" [disabled]="productForm.invalid && productForm.touched">
-        {{ isEdit ? 'Update Product' : 'Add Product' }}
+        {{ isEdit() ? 'Update Product' : 'Add Product' }}
       </button>
       <a routerLink="/master-products" class="btn secondary">Cancel</a>
     </div>

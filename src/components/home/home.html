@@ -11,18 +11,25 @@
     </div>
   </div>
 
-  <div class="features">
-    <div class="feature">
-      <h2>Products</h2>
-      <p>Explore our full catalog with sorting, selection, and dark mode support.</p>
+  <!-- Defer loading of the features section until user interacts with the page -->
+  @defer (on interaction) {
+    <div class="features">
+      <div class="feature">
+        <h2>Products</h2>
+        <p>Explore our full catalog with sorting, selection, and dark mode support.</p>
+      </div>
+      <div class="feature">
+        <h2>Details</h2>
+        <p>Click any product to view complete information and high-resolution images.</p>
+      </div>
+      <div class="feature">
+        <h2>Manage</h2>
+        <p>Add, edit, or remove products from the master catalog with ease.</p>
+      </div>
     </div>
-    <div class="feature">
-      <h2>Details</h2>
-      <p>Click any product to view complete information and high-resolution images.</p>
+  } @placeholder {
+    <div class="features-placeholder" aria-busy="true">
+      <p>Loading features...</p>
     </div>
-    <div class="feature">
-      <h2>Manage</h2>
-      <p>Add, edit, or remove products from the master catalog with ease.</p>
-    </div>
-  </div>
+  }
 </section>
